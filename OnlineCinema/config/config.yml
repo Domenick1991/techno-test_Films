@@ -1,0 +1,5 @@
+database_connection_string: "host=localhost port=5432 user=adminPG password=1Qwerty2$ dbname=OnlineCinema sslmode=disable"
+http_server:
+  address: "localhost:8080"
+  timeout_request: 4s # время на чтение запроса и ответ на запрос
+  idle_timeout: 60s   # время жизни соединения
