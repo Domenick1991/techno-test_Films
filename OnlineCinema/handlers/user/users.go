@@ -8,15 +8,21 @@ import (
 	storages "techno-test_Films/OnlineCinema/storage"
 )
 
+// User model info
+// @Description User информация о пользователе
 type User struct {
-	Id       int    `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Isadmin  bool   `json:"userIsAdmin"`
+	Id       int    `json:"id"`          // идентификатор пользователя
+	Username string `json:"username"`    // имя пользователя
+	Password string `json:"password"`    // пароль пользователя
+	Isadmin  bool   `json:"userIsAdmin"` // признак того, что пользователь является администратором
 }
 
 func (u *User) TableName() string {
 	return "users"
+}
+
+type DeleteUserStruct struct {
+	Id int `json:"id"`
 }
 
 func HttpResponse(w http.ResponseWriter, status int, text string) {
@@ -41,7 +47,15 @@ func GetUser(userName, password string, storage *storages.Storage) (User, error)
 	return user, nil
 }
 
-// GetAllUsers Функция возвращает всех пользователей БД
+// @Summary получить пользователей
+// @Tags user
+// @Description Возвращает всех пользователей приложения
+// @id GetAllUsers
+// @Accept json
+// @Procedure json
+// @router /GetAllUsers [get]
+// @Success 200 {string} string "ok"
+// @Security BasicAuth
 func GetAllUsers(storage *storages.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
@@ -62,7 +76,15 @@ func GetAllUsers(storage *storages.Storage) http.HandlerFunc {
 	}
 }
 
-// CreateUser функция добавляет нового пользователя в БД
+// @Summary Создать пользователя
+// @Tags user
+// @Description Создает нового пользователя приложения
+// @id CreateUser
+// @Accept json
+// @Procedure json
+// @param input body User true "Информация о пользователе"
+// @router /CreateUser [post]
+// @Security BasicAuth
 func CreateUser(storage *storages.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
@@ -87,7 +109,7 @@ func CreateUser(storage *storages.Storage) http.HandlerFunc {
 				if err1 != nil {
 					HttpResponse(w, http.StatusInternalServerError, "Не удалось добавить пользователя")
 				} else {
-					HttpResponse(w, http.StatusInternalServerError, "Пользователь успешно добавлен")
+					HttpResponse(w, http.StatusOK, "Пользователь успешно добавлен")
 				}
 			} else {
 				HttpResponse(w, http.StatusInternalServerError, "Пользователь уже существует")
@@ -98,15 +120,20 @@ func CreateUser(storage *storages.Storage) http.HandlerFunc {
 	}
 }
 
-// DeleteUser функция удаляет пользователя из БД
+// @Summary Удалить пользователя
+// @Tags user
+// @Description Удаляет пользователя приложения
+// @id DeleteUser
+// @Accept json
+// @Procedure json
+// @param input body DeleteUserStruct true "Идентификатор пользователя"
+// @router /DeleteUser [Delete]
+// @Security BasicAuth
 func DeleteUser(storage *storages.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//TODO сделать проверку что хотя бы один администратор должен оставаться.
 		if r.Method == http.MethodDelete {
-			type deleteUser struct {
-				Id int `json:"id"`
-			}
-			var user deleteUser
+			var user DeleteUserStruct
 			decoder := json.NewDecoder(r.Body)
 			decoder.DisallowUnknownFields()
 			err := decoder.Decode(&user)

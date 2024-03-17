@@ -1,0 +1,235 @@
+definitions:
+  storage.Actor:
+    properties:
+      DeleteFilms:
+        items:
+          type: integer
+        type: array
+      actorname:
+        type: string
+      addfilms:
+        items:
+          type: integer
+        type: array
+      birthdate:
+        type: string
+      id:
+        type: integer
+      sex:
+        type: string
+    type: object
+  storage.Film:
+    properties:
+      addActors:
+        items:
+          type: integer
+        type: array
+      deleteActors:
+        items:
+          type: integer
+        type: array
+      description:
+        type: string
+      filmname:
+        type: string
+      id:
+        type: integer
+      rating:
+        type: string
+      releasedate:
+        type: string
+    type: object
+  storage.OutActor:
+    properties:
+      actorname:
+        type: string
+      birthdate:
+        type: string
+      films:
+        items:
+          $ref: '#/definitions/storage.Film'
+        type: array
+      id:
+        type: integer
+      sex:
+        type: string
+    type: object
+  users.DeleteUserStruct:
+    properties:
+      id:
+        type: integer
+    type: object
+  users.User:
+    description: User информация о пользователе
+    properties:
+      id:
+        description: идентификатор пользователя
+        type: integer
+      password:
+        description: пароль пользователя
+        type: string
+      userIsAdmin:
+        description: признак того, что пользователь является администратором
+        type: boolean
+      username:
+        description: имя пользователя
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Фильмотека
+  title: Фильмотека API
+  version: "1.0"
+paths:
+  /CreateActor:
+    post:
+      consumes:
+      - application/json
+      description: Функция добавляет нового актёра
+      operationId: CreateActor
+      parameters:
+      - description: Информация об актёре
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Actor'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.OutActor'
+            type: array
+      security:
+      - BasicAuth: []
+      summary: Добавить актёра
+      tags:
+      - actors
+  /CreateUser:
+    post:
+      consumes:
+      - application/json
+      description: Создает нового пользователя приложения
+      operationId: CreateUser
+      parameters:
+      - description: Информация о пользователе
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/users.User'
+      responses: {}
+      security:
+      - BasicAuth: []
+      summary: Создать пользователя
+      tags:
+      - user
+  /DeleteActor:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет актёра
+      operationId: DeleteActor
+      parameters:
+      - description: Информация об актёре
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Actor'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.OutActor'
+            type: array
+      security:
+      - BasicAuth: []
+      summary: Удалить актёра
+      tags:
+      - actors
+  /DeleteUser:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет пользователя приложения
+      operationId: DeleteUser
+      parameters:
+      - description: Идентификатор пользователя
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/users.DeleteUserStruct'
+      responses: {}
+      security:
+      - BasicAuth: []
+      summary: Удалить пользователя
+      tags:
+      - user
+  /GetActors:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает всех актёров фильмотеки
+      operationId: GetActors
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.OutActor'
+            type: array
+      security:
+      - BasicAuth: []
+      summary: Показать актёров
+      tags:
+      - actors
+  /GetAllUsers:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает всех пользователей приложения
+      operationId: GetAllUsers
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - BasicAuth: []
+      summary: получить пользователей
+      tags:
+      - user
+  /UpdateActor:
+    post:
+      consumes:
+      - application/json
+      description: обновляет данные об актере
+      operationId: UpdateActor
+      parameters:
+      - description: Информация об актёре
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Actor'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.OutActor'
+            type: array
+      security:
+      - BasicAuth: []
+      summary: Изменить актёра
+      tags:
+      - actors
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

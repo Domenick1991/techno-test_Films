@@ -15,6 +15,7 @@ func NonPage(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Страница не существует"))
 }
 
+// @Security BasicAuth
 func AdminAuth(next http.HandlerFunc, storage *storage.Storage) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		username, password, ok := r.BasicAuth()
@@ -33,6 +34,7 @@ func AdminAuth(next http.HandlerFunc, storage *storage.Storage) http.HandlerFunc
 	})
 }
 
+// @Security BasicAuth
 func UserAuth(next http.HandlerFunc, storage *storage.Storage) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		username, password, ok := r.BasicAuth()
