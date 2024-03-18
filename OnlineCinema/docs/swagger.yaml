@@ -103,7 +103,7 @@ definitions:
         description: имя пользователя
         type: string
     type: object
-host: :8080
+host: localhost:8080
 info:
   contact: {}
   description: Фильмотека

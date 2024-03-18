@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "/techno-test_Films/docs"
 	_ "github.com/lib/pq"
 	"github.com/swaggo/http-swagger"
 	"net/http"
@@ -16,7 +17,7 @@ import (
 // @title Фильмотека API
 // @version 1.0
 // @description Фильмотека
-// @host :8080
+// @host localhost:8080
 // @securitydefinitions.basic BasicAuth
 // @in header
 // @name Authorization

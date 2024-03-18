@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": ":8080",
+    "host": "localhost:8080",
     "paths": {
         "/CreateActor": {
             "post": {

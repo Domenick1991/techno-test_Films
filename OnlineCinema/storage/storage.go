@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	dbx "github.com/go-ozzo/ozzo-dbx"
-	"io"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -449,13 +448,10 @@ func RequestTolog(r *http.Request, logger *slog.Logger) {
 	if !ok {
 		username = ""
 	}
-	bs, _ := io.ReadAll(r.Body)
-	s1 := string(bs)
 	logger.Debug(
 		"incoming request",
 		"url", r.URL.Path,
 		"method", r.Method,
-		"body", s1,
 		"user", username,
 		"time", time.Now().Format("02-01-2006 15:04:05"),
 	)

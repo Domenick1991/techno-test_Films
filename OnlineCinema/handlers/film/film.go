@@ -54,8 +54,13 @@ func GetFilms(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 
 			var films []storages.OutFilm
 			orderBy := getFilmsParam.SortName + " " + getFilmsParam.SortType
-			whereText := "(select count(*) from filmsactors as fa left join actors as a on fa.actor = a.id where fa.film = f.id and lower(a.actorname) like '%" + getFilmsParam.ActorName + "%') > 0"
-			err = storage.DB.Select().From("films as f").Where(dbx.Like("lower(filmname)", getFilmsParam.FilmName)).Where(dbx.NewExp(whereText)).OrderBy(orderBy).All(&films)
+
+			if getFilmsParam.ActorName != "" {
+				whereText := "(select count(*) from filmsactors as fa left join actors as a on fa.actor = a.id where fa.film = f.id and lower(a.actorname) like '%" + getFilmsParam.ActorName + "%') > 0"
+				err = storage.DB.Select().From("films as f").Where(dbx.Like("lower(filmname)", getFilmsParam.FilmName)).Where(dbx.NewExp(whereText)).OrderBy(orderBy).All(&films)
+			} else {
+				err = storage.DB.Select().From("films as f").Where(dbx.Like("lower(filmname)", getFilmsParam.FilmName)).OrderBy(orderBy).All(&films)
+			}
 			if err != nil {
 				storages.HttpResponse(w, http.StatusInternalServerError, "Ошибка при получении данных о фильмах")
 				return
