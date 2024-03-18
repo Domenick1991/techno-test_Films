@@ -39,6 +39,17 @@ definitions:
       releasedate:
         type: string
     type: object
+  storage.GetFilmsParam:
+    properties:
+      actorname:
+        type: string
+      filmname:
+        type: string
+      sortname:
+        type: string
+      sorttype:
+        type: string
+    type: object
   storage.OutActor:
     properties:
       actorname:
@@ -52,6 +63,23 @@ definitions:
       id:
         type: integer
       sex:
+        type: string
+    type: object
+  storage.OutFilm:
+    properties:
+      actors:
+        items:
+          $ref: '#/definitions/storage.Actor'
+        type: array
+      description:
+        type: string
+      filmname:
+        type: string
+      id:
+        type: integer
+      rating:
+        type: string
+      releasedate:
         type: string
     type: object
   users.DeleteUserStruct:
@@ -75,7 +103,7 @@ definitions:
         description: имя пользователя
         type: string
     type: object
-host: localhost:8080
+host: :8080
 info:
   contact: {}
   description: Фильмотека
@@ -99,14 +127,31 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/storage.OutActor'
-            type: array
+            $ref: '#/definitions/storage.Actor'
       security:
       - BasicAuth: []
       summary: Добавить актёра
       tags:
       - actors
+  /CreateFilm:
+    post:
+      consumes:
+      - application/json
+      description: добавляет информацию о Фильме
+      operationId: CreateFilm
+      parameters:
+      - description: Информация о фильме
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Film'
+      responses: {}
+      security:
+      - BasicAuth: []
+      summary: Добавить фильм
+      tags:
+      - films
   /CreateUser:
     post:
       consumes:
@@ -142,15 +187,30 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            items:
-              $ref: '#/definitions/storage.OutActor'
-            type: array
       security:
       - BasicAuth: []
       summary: Удалить актёра
       tags:
       - actors
+  /DeleteFilm:
+    delete:
+      consumes:
+      - application/json
+      description: удаляет информацию о Фильме
+      operationId: DeleteFilm
+      parameters:
+      - description: Информация о фильме
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Film'
+      responses: {}
+      security:
+      - BasicAuth: []
+      summary: удалить фильм
+      tags:
+      - films
   /DeleteUser:
     delete:
       consumes:
@@ -180,9 +240,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/storage.OutActor'
-            type: array
+            $ref: '#/definitions/storage.OutActor'
       security:
       - BasicAuth: []
       summary: Показать актёров
@@ -196,14 +254,37 @@ paths:
       operationId: GetAllUsers
       responses:
         "200":
-          description: ok
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/users.User'
       security:
       - BasicAuth: []
       summary: получить пользователей
       tags:
       - user
+  /GetFilms:
+    post:
+      consumes:
+      - application/json
+      description: Получает информацию о фильмах
+      operationId: GetFilms
+      parameters:
+      - description: условия выборки
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.GetFilmsParam'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/storage.OutFilm'
+      security:
+      - BasicAuth: []
+      summary: Показать фильмы
+      tags:
+      - films
   /UpdateActor:
     post:
       consumes:
@@ -221,14 +302,31 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/storage.OutActor'
-            type: array
+            $ref: '#/definitions/storage.Actor'
       security:
       - BasicAuth: []
       summary: Изменить актёра
       tags:
       - actors
+  /UpdateFilm:
+    post:
+      consumes:
+      - application/json
+      description: обновляет информацию о Фильме
+      operationId: UpdateFilm
+      parameters:
+      - description: Информация о фильме
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Film'
+      responses: {}
+      security:
+      - BasicAuth: []
+      summary: Обновить фильм
+      tags:
+      - films
 securityDefinitions:
   BasicAuth:
     type: basic

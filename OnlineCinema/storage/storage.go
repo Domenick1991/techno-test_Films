@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	dbx "github.com/go-ozzo/ozzo-dbx"
+	"io"
+	"log/slog"
 	"net/http"
 	"strconv"
 	"strings"
@@ -245,12 +247,14 @@ type ErrorList struct {
 }
 
 func HttpResponse(w http.ResponseWriter, status int, text string) {
+	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
 	result, _ := json.MarshalIndent(text, "", "\t")
 	w.Write([]byte(result))
 }
 
 func HttpResponseObject(w http.ResponseWriter, status int, text []byte) {
+	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
 	w.Write(text)
 }
@@ -437,4 +441,22 @@ func DecodePassword(password string) string {
 	}
 	pass := string(bs)
 	return pass[0:strings.LastIndex(pass, "@1")]
+}
+
+// TODO Тело запроса
+func RequestTolog(r *http.Request, logger *slog.Logger) {
+	username, _, ok := r.BasicAuth()
+	if !ok {
+		username = ""
+	}
+	bs, _ := io.ReadAll(r.Body)
+	s1 := string(bs)
+	logger.Debug(
+		"incoming request",
+		"url", r.URL.Path,
+		"method", r.Method,
+		"body", s1,
+		"user", username,
+		"time", time.Now().Format("02-01-2006 15:04:05"),
+	)
 }

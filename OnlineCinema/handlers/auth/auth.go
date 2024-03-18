@@ -2,8 +2,8 @@ package auth
 
 import (
 	"net/http"
-	users "techno-test_Films/OnlineCinema/handlers/user"
-	"techno-test_Films/OnlineCinema/storage"
+	users "techno-test_Films/handlers/user"
+	"techno-test_Films/storage"
 )
 
 // NonPage handler для пустой страницы

@@ -3,9 +3,10 @@ package actor
 import (
 	"encoding/json"
 	dbx "github.com/go-ozzo/ozzo-dbx"
+	"log/slog"
 	"net/http"
 	"strconv"
-	storages "techno-test_Films/OnlineCinema/storage"
+	storages "techno-test_Films/storage"
 )
 
 // @Summary Показать актёров
@@ -15,10 +16,11 @@ import (
 // @Accept json
 // @Procedure json
 // @router /GetActors [get]
-// @Success 200 {object} []storages.OutActor
+// @Success 200 {object} storages.OutActor
 // @Security BasicAuth
-func GetActors(storage *storages.Storage) http.HandlerFunc {
+func GetActors(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodGet {
 
 			var actors []storages.OutActor
@@ -43,7 +45,7 @@ func GetActors(storage *storages.Storage) http.HandlerFunc {
 			}
 
 			result, _ := json.MarshalIndent(actors, "", "\t")
-			storages.HttpResponseObject(w, http.StatusInternalServerError, result)
+			storages.HttpResponseObject(w, http.StatusOK, result)
 		} else {
 			storages.HttpResponse(w, http.StatusMethodNotAllowed, "Метод не поддерживается, используйте метод POST")
 		}
@@ -58,10 +60,11 @@ func GetActors(storage *storages.Storage) http.HandlerFunc {
 // @Procedure json
 // @router /CreateActor [Post]
 // @param input body storages.Actor true "Информация об актёре"
-// @Success 200 {object} []storages.OutActor
+// @Success 200 {object} storages.Actor
 // @Security BasicAuth
-func CreateActor(storage *storages.Storage) http.HandlerFunc {
+func CreateActor(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodPost {
 			var actor storages.Actor
 
@@ -111,10 +114,11 @@ func CreateActor(storage *storages.Storage) http.HandlerFunc {
 // @Procedure json
 // @router /UpdateActor [Post]
 // @param input body storages.Actor true "Информация об актёре"
-// @Success 200 {object} []storages.OutActor
+// @Success 200 {object} storages.Actor
 // @Security BasicAuth
-func UpdateActor(storage *storages.Storage) http.HandlerFunc {
+func UpdateActor(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodPost {
 			var actor storages.Actor
 
@@ -178,10 +182,11 @@ func UpdateActor(storage *storages.Storage) http.HandlerFunc {
 // @Procedure json
 // @router /DeleteActor [Delete]
 // @param input body storages.Actor true "Информация об актёре"
-// @Success 200 {object} []storages.OutActor
+// @Success 200
 // @Security BasicAuth
-func DeleteActor(storage *storages.Storage) http.HandlerFunc {
+func DeleteActor(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodDelete {
 			var actor storages.Actor
 

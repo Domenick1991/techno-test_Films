@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	dbx "github.com/go-ozzo/ozzo-dbx"
+	"log/slog"
 	"net/http"
-	storages "techno-test_Films/OnlineCinema/storage"
+	storages "techno-test_Films/storage"
 )
 
 // User model info
@@ -54,10 +55,11 @@ func GetUser(userName, password string, storage *storages.Storage) (User, error)
 // @Accept json
 // @Procedure json
 // @router /GetAllUsers [get]
-// @Success 200 {string} string "ok"
+// @Success 200 {object} User
 // @Security BasicAuth
-func GetAllUsers(storage *storages.Storage) http.HandlerFunc {
+func GetAllUsers(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodGet {
 			var users []User
 			//TODO переделать
@@ -85,8 +87,9 @@ func GetAllUsers(storage *storages.Storage) http.HandlerFunc {
 // @param input body User true "Информация о пользователе"
 // @router /CreateUser [post]
 // @Security BasicAuth
-func CreateUser(storage *storages.Storage) http.HandlerFunc {
+func CreateUser(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodPost {
 			var user User
 
@@ -129,8 +132,9 @@ func CreateUser(storage *storages.Storage) http.HandlerFunc {
 // @param input body DeleteUserStruct true "Идентификатор пользователя"
 // @router /DeleteUser [Delete]
 // @Security BasicAuth
-func DeleteUser(storage *storages.Storage) http.HandlerFunc {
+func DeleteUser(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		//TODO сделать проверку что хотя бы один администратор должен оставаться.
 		if r.Method == http.MethodDelete {
 			var user DeleteUserStruct

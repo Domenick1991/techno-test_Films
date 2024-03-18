@@ -1,6 +1,18 @@
-version: "3.9"
+version: "1"
 
 services:
+  app:
+    container_name: app_OnlineCinema
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    restart: unless-stopped
+    networks:
+      - postgres
   db:
     container_name: postgres_OnlineCinema
     image: postgres:16.2-alpine3.19
@@ -10,6 +22,7 @@ services:
       POSTGRES_USER: "adminPG"
       POSTGRES_PASSWORD: "1Qwerty2$"
       POSTGRES_DB: "OnlineCinema"
+    restart: unless-stopped
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:

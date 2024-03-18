@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	dbx "github.com/go-ozzo/ozzo-dbx"
+	"log/slog"
 	"net/http"
 	"strconv"
 	"strings"
-	storages "techno-test_Films/OnlineCinema/storage"
+	storages "techno-test_Films/storage"
 )
 
 // @Summary Показать фильмы
@@ -18,10 +19,11 @@ import (
 // @Procedure json
 // @router /GetFilms [Post]
 // @param input body storages.GetFilmsParam true "условия выборки"
-// @Success 200 {object} []storages.OutActor
+// @Success 200 {object} storages.OutFilm
 // @Security BasicAuth
-func GetFilms(storage *storages.Storage) http.HandlerFunc {
+func GetFilms(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodPost {
 
 			var getFilmsParam storages.GetFilmsParam
@@ -89,10 +91,10 @@ func GetFilms(storage *storages.Storage) http.HandlerFunc {
 // @Procedure json
 // @router /CreateFilm [Post]
 // @param input body storages.Film true "Информация о фильме"
-// @Success 200 {object} []storages.OutActor
 // @Security BasicAuth
-func CreateFilm(storage *storages.Storage) http.HandlerFunc {
+func CreateFilm(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodPost {
 			var film storages.Film
 
@@ -146,10 +148,10 @@ func CreateFilm(storage *storages.Storage) http.HandlerFunc {
 // @Procedure json
 // @router /UpdateFilm [Post]
 // @param input body storages.Film true "Информация о фильме"
-// @Success 200 {object} []storages.OutActor
 // @Security BasicAuth
-func UpdateFilm(storage *storages.Storage) http.HandlerFunc {
+func UpdateFilm(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodPost {
 			var film storages.Film
 
@@ -209,12 +211,12 @@ func UpdateFilm(storage *storages.Storage) http.HandlerFunc {
 // @id DeleteFilm
 // @Accept json
 // @Procedure json
-// @router /DeleteFilm [Post]
+// @router /DeleteFilm [Delete]
 // @param input body storages.Film true "Информация о фильме"
-// @Success 200 {object} []storages.OutActor
 // @Security BasicAuth
-func DeleteFilm(storage *storages.Storage) http.HandlerFunc {
+func DeleteFilm(storage *storages.Storage, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		storages.RequestTolog(r, logger)
 		if r.Method == http.MethodDelete {
 			var film storages.Film
 

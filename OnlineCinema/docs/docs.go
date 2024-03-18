@@ -46,13 +46,40 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.OutActor"
-                            }
+                            "$ref": "#/definitions/storage.Actor"
                         }
                     }
                 }
+            }
+        },
+        "/CreateFilm": {
+            "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "добавляет информацию о Фильме",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "films"
+                ],
+                "summary": "Добавить фильм",
+                "operationId": "CreateFilm",
+                "parameters": [
+                    {
+                        "description": "Информация о фильме",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/storage.Film"
+                        }
+                    }
+                ],
+                "responses": {}
             }
         },
         "/CreateUser": {
@@ -114,15 +141,39 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.OutActor"
-                            }
-                        }
+                        "description": "OK"
                     }
                 }
+            }
+        },
+        "/DeleteFilm": {
+            "delete": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "удаляет информацию о Фильме",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "films"
+                ],
+                "summary": "удалить фильм",
+                "operationId": "DeleteFilm",
+                "parameters": [
+                    {
+                        "description": "Информация о фильме",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/storage.Film"
+                        }
+                    }
+                ],
+                "responses": {}
             }
         },
         "/DeleteUser": {
@@ -175,10 +226,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.OutActor"
-                            }
+                            "$ref": "#/definitions/storage.OutActor"
                         }
                     }
                 }
@@ -202,9 +250,46 @@ const docTemplate = `{
                 "operationId": "GetAllUsers",
                 "responses": {
                     "200": {
-                        "description": "ok",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/users.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/GetFilms": {
+            "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Получает информацию о фильмах",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "films"
+                ],
+                "summary": "Показать фильмы",
+                "operationId": "GetFilms",
+                "parameters": [
+                    {
+                        "description": "условия выборки",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/storage.GetFilmsParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/storage.OutFilm"
                         }
                     }
                 }
@@ -241,13 +326,40 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/storage.OutActor"
-                            }
+                            "$ref": "#/definitions/storage.Actor"
                         }
                     }
                 }
+            }
+        },
+        "/UpdateFilm": {
+            "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "обновляет информацию о Фильме",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "films"
+                ],
+                "summary": "Обновить фильм",
+                "operationId": "UpdateFilm",
+                "parameters": [
+                    {
+                        "description": "Информация о фильме",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/storage.Film"
+                        }
+                    }
+                ],
+                "responses": {}
             }
         }
     },
@@ -313,6 +425,23 @@ const docTemplate = `{
                 }
             }
         },
+        "storage.GetFilmsParam": {
+            "type": "object",
+            "properties": {
+                "actorname": {
+                    "type": "string"
+                },
+                "filmname": {
+                    "type": "string"
+                },
+                "sortname": {
+                    "type": "string"
+                },
+                "sorttype": {
+                    "type": "string"
+                }
+            }
+        },
         "storage.OutActor": {
             "type": "object",
             "properties": {
@@ -332,6 +461,32 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "storage.OutFilm": {
+            "type": "object",
+            "properties": {
+                "actors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/storage.Actor"
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "filmname": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "type": "string"
+                },
+                "releasedate": {
                     "type": "string"
                 }
             }
@@ -377,7 +532,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             ":8080",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Фильмотека API",

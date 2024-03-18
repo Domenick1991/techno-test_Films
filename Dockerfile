@@ -1,12 +1,11 @@
 FROM golang:1.22.1-alpine3.19 as builder
-WORKDIR /app
-COPY go.* ./
+WORKDIR /usr/local/src
+COPY ["OnlineCinema/go.mod", "OnlineCinema/go.sum", "./"]
 RUN go mod download
-COPY . ./
-RUN GOOS=linux GOARCH=amd64 go build -o app ./OnlineCinema
+COPY OnlineCinema ./
+RUN go build -o ./bin/app main.go
 
 FROM alpine:3.19 as app
-RUN apk --no-cache upgrade && apk --no-cache add ca-certificates
-COPY --from=builder /app/app /usr/local/bin/app
-WORKDIR /usr/local/bin
-CMD ["app"]
+COPY --from=builder /usr/local/src/bin/app /
+COPY OnlineCinema/config.yml config.yml
+CMD ["/app"]

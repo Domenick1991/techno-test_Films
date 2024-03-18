@@ -13,18 +13,16 @@ type Config struct {
 }
 
 type HttpServer struct {
-	Address        string        `yaml:"address" end-default:"localhost:8081"`
+	Address        string        `yaml:"address" end-default:"localhost:8080"`
 	TimeoutRequest time.Duration `yaml:"timeout_request" end-default:"4s"`
 	IdleTimeout    time.Duration `yaml:"idle_timeout" end-default:"60s"`
 }
 
 func MustLoad() *Config {
-	//Путь до конфига берет из переменной окружения
-	currentPath, err := os.Getwd()
-	if err != nil {
-		log.Fatalf("get current path error: %s", err)
+	configPath := os.Getenv("CONFIG_PATH")
+	if configPath == "" {
+		configPath = `config.yml`
 	}
-	configPath := currentPath + `\OnlineCinema\config\config.yml`
 
 	//Проверяем существует ли файл
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
