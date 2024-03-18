@@ -368,27 +368,33 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "DeleteFilms": {
+                    "description": "Массив из ИД фильмов, из которых нужно исключить Актёра. Не обязательный параметр",
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
                 "actorname": {
+                    "description": "Имя актёра",
                     "type": "string"
                 },
                 "addfilms": {
+                    "description": "Массив из ИД фильмов, в которые нужно добавить Актёра. Не обязательный параметр",
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
                 "birthdate": {
+                    "description": "Дата рождения",
                     "type": "string"
                 },
                 "id": {
+                    "description": "ИД Актёра",
                     "type": "integer"
                 },
                 "sex": {
+                    "description": "Пол",
                     "type": "string"
                 }
             }
@@ -397,30 +403,37 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "addActors": {
+                    "description": "Массив ИД Актёров, которых нужно добавить в фильм",
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
                 "deleteActors": {
+                    "description": "Массив ИД Актёров, которых нужно удалить из фильма",
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
                 "description": {
+                    "description": "описание",
                     "type": "string"
                 },
                 "filmname": {
+                    "description": "Имя фильма",
                     "type": "string"
                 },
                 "id": {
+                    "description": "ИД Фильма",
                     "type": "integer"
                 },
                 "rating": {
+                    "description": "рейтинг",
                     "type": "string"
                 },
                 "releasedate": {
+                    "description": "дата выхода",
                     "type": "string"
                 }
             }
@@ -429,15 +442,19 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "actorname": {
+                    "description": "Фильтр по имени актёра",
                     "type": "string"
                 },
                 "filmname": {
+                    "description": "фильтр по названию фильма",
                     "type": "string"
                 },
                 "sortname": {
+                    "description": "имя сортировки, значения: rating, filmname, releasedate",
                     "type": "string"
                 },
                 "sorttype": {
+                    "description": "тип сортировки, значения: asc или desc",
                     "type": "string"
                 }
             }
@@ -446,21 +463,26 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "actorname": {
+                    "description": "Имя актёра",
                     "type": "string"
                 },
                 "birthdate": {
+                    "description": "Дата рождения",
                     "type": "string"
                 },
                 "films": {
+                    "description": "Массив с информацией о фильмах",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/storage.Film"
                     }
                 },
                 "id": {
+                    "description": "ИД Актёра",
                     "type": "integer"
                 },
                 "sex": {
+                    "description": "Пол",
                     "type": "string"
                 }
             }
@@ -469,24 +491,30 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "actors": {
+                    "description": "Массив с информацией об Актёра в фильме",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/storage.Actor"
                     }
                 },
                 "description": {
+                    "description": "описание",
                     "type": "string"
                 },
                 "filmname": {
+                    "description": "Имя фильма",
                     "type": "string"
                 },
                 "id": {
+                    "description": "ИД Фильма",
                     "type": "integer"
                 },
                 "rating": {
+                    "description": "рейтинг",
                     "type": "string"
                 },
                 "releasedate": {
+                    "description": "дата выхода",
                     "type": "string"
                 }
             }
@@ -532,7 +560,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "localhost:8081",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Фильмотека API",

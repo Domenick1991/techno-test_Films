@@ -17,27 +17,27 @@ type Storage struct {
 }
 
 type Actor struct {
-	Id          int    `json:"id,omitempty"`
-	Actorname   string `json:"actorname"`
-	Sex         string `json:"sex"`
-	Birthdate   string `json:"birthdate"`
-	AddFilms    []int  `json:"addfilms"`
-	DeleteFilms []int  `json:"DeleteFilms"`
+	Id          int    `json:"id,omitempty"` //ИД Актёра
+	Actorname   string `json:"actorname"`    //Имя актёра
+	Sex         string `json:"sex"`          //Пол
+	Birthdate   string `json:"birthdate"`    //Дата рождения
+	AddFilms    []int  `json:"addfilms"`     //Массив из ИД фильмов, в которые нужно добавить Актёра. Не обязательный параметр
+	DeleteFilms []int  `json:"DeleteFilms"`  //Массив из ИД фильмов, из которых нужно исключить Актёра. Не обязательный параметр
 }
 
 type OutActor struct {
-	Id        int    `json:"id,omitempty"`
-	Actorname string `json:"actorname"`
-	Sex       string `json:"sex"`
-	Birthdate string `json:"birthdate"`
-	Films     []Film `json:"films"`
+	Id        int    `json:"id,omitempty"` //ИД Актёра
+	Actorname string `json:"actorname"`    //Имя актёра
+	Sex       string `json:"sex"`          //Пол
+	Birthdate string `json:"birthdate"`    //Дата рождения
+	Films     []Film `json:"films"`        //Массив с информацией о фильмах
 }
 
 type GetFilmsParam struct {
-	SortType  string `json:"sorttype"`
-	SortName  string `json:"sortname"`
-	ActorName string `json:"actorname"`
-	FilmName  string `json:"filmname"`
+	SortType  string `json:"sorttype"`  //тип сортировки, значения: asc или desc
+	SortName  string `json:"sortname"`  //имя сортировки, значения: rating, filmname, releasedate
+	ActorName string `json:"actorname"` //Фильтр по имени актёра
+	FilmName  string `json:"filmname"`  //фильтр по названию фильма
 }
 
 type ActorDB struct {
@@ -118,22 +118,22 @@ func (actor *ActorDB) GetUpdatesData() map[string]interface{} {
 }
 
 type Film struct {
-	Id           int    `json:"id"`
-	Filmname     string `json:"filmname"`
-	Description  string `json:"description"`
-	Releasedate  string `json:"releasedate"`
-	Rating       string `json:"rating"`
-	AddActors    []int  `json:"addActors"`
-	DeleteActors []int  `json:"deleteActors"`
+	Id           int    `json:"id"`           //ИД Фильма
+	Filmname     string `json:"filmname"`     //Имя фильма
+	Description  string `json:"description"`  //описание
+	Releasedate  string `json:"releasedate"`  //дата выхода
+	Rating       string `json:"rating"`       //рейтинг
+	AddActors    []int  `json:"addActors"`    //Массив ИД Актёров, которых нужно добавить в фильм
+	DeleteActors []int  `json:"deleteActors"` //Массив ИД Актёров, которых нужно удалить из фильма
 }
 
 type OutFilm struct {
-	Id          int     `json:"id"`
-	Filmname    string  `json:"filmname"`
-	Description string  `json:"description"`
-	Releasedate string  `json:"releasedate"`
-	Rating      string  `json:"rating"`
-	Actors      []Actor `json:"actors"`
+	Id          int     `json:"id"`          //ИД Фильма
+	Filmname    string  `json:"filmname"`    //Имя фильма
+	Description string  `json:"description"` //описание
+	Releasedate string  `json:"releasedate"` //дата выхода
+	Rating      string  `json:"rating"`      //рейтинг
+	Actors      []Actor `json:"actors"`      //Массив с информацией об Актёра в фильме
 }
 
 func (film *Film) GetActorFilmInfo() []ActorAndFilms {

@@ -17,7 +17,7 @@ import (
 // @title Фильмотека API
 // @version 1.0
 // @description Фильмотека
-// @host localhost:8080
+// @host localhost:8081
 // @securitydefinitions.basic BasicAuth
 // @in header
 // @name Authorization
@@ -45,7 +45,7 @@ func main() {
 	//роут
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", auth.NonPage)
-	mux.HandleFunc("/swagger/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/swagger/doc.json")))
+	mux.HandleFunc("/swagger/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8081/swagger/doc.json")))
 	mux.HandleFunc("/GetAllUsers", auth.AdminAuth(users.GetAllUsers(db, logger), db))
 	mux.HandleFunc("/CreateUser", auth.AdminAuth(users.CreateUser(db, logger), db))
 	mux.HandleFunc("/DeleteUser", auth.AdminAuth(users.DeleteUser(db, logger), db))
