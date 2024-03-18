@@ -1,11 +1,11 @@
 package main
 
 import (
-	_ "/techno-test_Films/docs"
 	_ "github.com/lib/pq"
 	"github.com/swaggo/http-swagger"
 	"net/http"
 	"techno-test_Films/config"
+	_ "techno-test_Films/docs"
 	"techno-test_Films/handlers/actor"
 	"techno-test_Films/handlers/auth"
 	"techno-test_Films/handlers/film"

@@ -1,16 +1,6 @@
 version: "1"
 
 services:
-  swagger-ui:
-    build:
-      context: .
-      dockerfile: ./DockerfileSwagger
-    ports:
-      - "8082:8082"
-    restart: unless-stopped
-    volumes:
-      - ./dist:/usr/share/nginx/html
-      - ./swagger.json:/usr/share/nginx/html/swagger.json
   app:
     container_name: app_OnlineCinema
     build:

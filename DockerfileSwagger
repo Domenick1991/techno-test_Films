@@ -1,2 +1,0 @@
-FROM swaggerapi/swagger-ui
-COPY OnlineCinema/docs/ /usr/share/nginx/html/
